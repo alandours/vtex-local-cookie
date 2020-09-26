@@ -1,0 +1,26 @@
+{
+
+  "manifest_version": 2,
+  "name": "VtexLocalCookie",
+  "description": "Add the VtexIdclientAutCookie cookie to vtexlocal",
+  "version": "1.0.0",
+  "author": "Alan Dours",
+
+  "permissions": [
+    "cookies",
+    "http://*.vtexlocal.com.br/*",
+    "https://*.vtexcommercestable.com.br/*",
+    "https://*.myvtex.com/*"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*.vtexlocal.com.br/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
