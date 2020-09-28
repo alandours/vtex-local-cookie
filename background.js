@@ -1,21 +1,9 @@
 const browser = chrome || browser;
 const cookieName = 'VtexIdclientAutCookie';
 
-browser.runtime.onMessage.addListener(init);
-
 const init = (localUrl) => {
-  browser.cookies.get({
-    url: localUrl,
-    name: cookieName
-  }, getCookiesFromStable);
-
-  /* If the cookie doesn't exist on vtexlocal, get all the VtexIdclientAutCookie cookies from vtexcommercestable */
-  const getCookiesFromStable = (localCookie) => {
-    if (localCookie) return;
-
-    browser.cookies.getAll({
-      name: cookieName
-    }, addLocalCookie);
+  const redirect = () => {
+    window.location.href = localUrl;
   };
 
   const addLocalCookie = (stableCookies) => {
@@ -27,11 +15,30 @@ const init = (localUrl) => {
   
     if (!value || !expirationDate) return;
 
+    console.log('Adding cookie...');
+
     browser.cookies.set({
       url: localUrl,
       name: cookieName,
       value,
       expirationDate
-    });
+    }, redirect);
   };
+
+  /* If the cookie doesn't exist on vtexlocal, get all the VtexIdclientAutCookie cookies from vtexcommercestable */
+  const getCookiesFromStable = (localCookie) => {
+    if (localCookie) return;
+    console.log('Cookie does not exist, getting cookie...');
+
+    browser.cookies.getAll({
+      name: cookieName
+    }, addLocalCookie);
+  };
+
+  browser.cookies.get({
+    url: localUrl,
+    name: cookieName
+  }, getCookiesFromStable);
 };
+
+browser.runtime.onMessage.addListener(init);
