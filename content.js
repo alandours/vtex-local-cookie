@@ -1,4 +1,9 @@
 const browser = chrome || browser;
 
-browser.runtime.sendMessage(window.location.origin);
+const reload = (localUrl) => {
+  window.location.href = localUrl;
+};
+
+browser.runtime.sendMessage({}, reload);
+
 console.log('Sending message...');

@@ -1,9 +1,12 @@
 const browser = chrome || browser;
 const cookieName = 'VtexIdclientAutCookie';
 
-const init = (localUrl) => {
-  const redirect = () => {
-    window.location.href = localUrl;
+const init = (message, sender, sendResponse) => {
+  const { origin } = sender || {};
+  if (!origin) return;
+
+  const reload = () => {
+    sendResponse(origin);
   };
 
   const addLocalCookie = (stableCookies) => {
@@ -18,11 +21,11 @@ const init = (localUrl) => {
     console.log('Adding cookie...');
 
     browser.cookies.set({
-      url: localUrl,
+      url: origin,
       name: cookieName,
       value,
       expirationDate
-    }, redirect);
+    }, reload);
   };
 
   /* If the cookie doesn't exist on vtexlocal, get all the VtexIdclientAutCookie cookies from vtexcommercestable */
@@ -36,7 +39,7 @@ const init = (localUrl) => {
   };
 
   browser.cookies.get({
-    url: localUrl,
+    url: origin,
     name: cookieName
   }, getCookiesFromStable);
 };
