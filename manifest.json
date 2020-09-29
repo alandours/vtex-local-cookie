@@ -2,15 +2,16 @@
 
   "manifest_version": 2,
   "name": "VtexLocalCookie",
-  "description": "Add the VtexIdclientAutCookie cookie to vtexlocal",
-  "version": "1.0.3",
+  "description": "Add the VtexIdclientAutCookie cookie to vtexlocal and the uploader",
+  "version": "1.1",
   "author": "Alan Dours",
 
   "permissions": [
     "cookies",
     "http://*.vtexlocal.com.br/*",
     "*://*.vtexcommercestable.com.br/*",
-    "*://*.myvtex.com/*"
+    "*://*.myvtex.com/*",
+    "*://uploader.janisdev.in/*"
   ],
 
   "background": {
@@ -19,7 +20,7 @@
 
   "content_scripts": [
     {
-      "matches": ["http://*.vtexlocal.com.br/admin"],
+      "matches": ["http://*.vtexlocal.com.br/admin", "*://uploader.janisdev.in/*"],
       "js": ["js/vtex-local-cookie.js"]
     }
   ]
