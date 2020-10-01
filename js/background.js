@@ -1,6 +1,5 @@
 const browser = chrome || browser;
 const cookieName = 'VtexIdclientAutCookie';
-const defaultEnv = 'qarosenchile';
 let storeId;
 
 const init = (request, sender, sendResponse) => {
@@ -17,11 +16,11 @@ const init = (request, sender, sendResponse) => {
     if (!stableCookies || !stableCookies.length) {
       const regExp = /https?:\/\/(.+)\.vtexlocal\.com\.br/i;
       const match = origin.match(regExp);
-      const env = (match && match[1]) || defaultEnv;
+      const env = (match && match[1]);
 
 			return sendResponse({
         reload: false,
-        message: `There are no ${cookieName} cookies. Log in on https://${env}.vtexcommercestable.com.br`,
+        message: `There are no ${cookieName} cookies. Log in on ${ env ? `https://${env}.vtexcommercestable.com.br` : 'vtexcommercestable or myvtex' } first`,
         storeId
       });
     }
