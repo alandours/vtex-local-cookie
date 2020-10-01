@@ -58,8 +58,6 @@ const init = (request, sender, sendResponse) => {
 
   const { origin } = sender || {};
 
-  console.log('sneder', sender)
-
   browser.cookies.get({
     url: origin,
     name: cookieName
