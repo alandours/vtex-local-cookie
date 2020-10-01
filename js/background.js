@@ -1,13 +1,15 @@
 const browser = chrome || browser;
 const cookieName = 'VtexIdclientAutCookie';
 const defaultEnv = 'qarosenchile';
+let storeId;
 
 const init = (request, sender, sendResponse) => {
   const reload = () => {
 		return sendResponse({ 
 			reload: /vtexlocal/.test(origin),
 			url: origin,
-			message: `The ${cookieName} cookie was added to ${origin}!`
+      message: `The ${cookieName} cookie was added to ${origin}!`,
+      storeId
 		})
   };
 
@@ -19,7 +21,8 @@ const init = (request, sender, sendResponse) => {
 
 			return sendResponse({
         reload: false,
-				message: `There are no ${cookieName} cookies. Log in on https://${env}.vtexcommercestable.com.br`
+        message: `There are no ${cookieName} cookies. Log in on https://${env}.vtexcommercestable.com.br`,
+        storeId
       });
     }
   
@@ -30,7 +33,8 @@ const init = (request, sender, sendResponse) => {
 		if (!value || !expirationDate) {
 			return sendResponse({
 				reload: false,
-				message: `The ${cookieName} cookie has missing data`
+        message: `The ${cookieName} cookie has missing data`,
+        storeId
       });
     }
 
@@ -38,7 +42,8 @@ const init = (request, sender, sendResponse) => {
       url: origin,
       name: cookieName,
       value,
-      expirationDate
+      expirationDate,
+      storeId
 		}, reload);
   };
 
@@ -47,21 +52,40 @@ const init = (request, sender, sendResponse) => {
     if (localCookie) {
 			return sendResponse({
 				reload: false,
-				message: `The ${cookieName} cookie already exists on ${origin}`
+        message: `The ${cookieName} cookie already exists on ${origin}`,
+        storeId
       });
     }
 
     browser.cookies.getAll({
-      name: cookieName
+      name: cookieName,
+      storeId
     }, addLocalCookie);
   };
 
-  const { origin } = sender || {};
+  const { origin, tab } = sender || {};
+  const { id: tabId } = tab || {};
 
-  browser.cookies.get({
-    url: origin,
-    name: cookieName
-	}, getCookiesFromStable);
+  const getStoreId = (cookieStores) => {
+    storeId = cookieStores.reduce((acc, curr) => {
+      const { id, tabIds } = curr || {};
+
+      const isCurrentStore = tabIds.find(storeTabId => storeTabId === tabId);
+
+      if (isCurrentStore)
+        acc = id;
+
+      return acc;
+    }, null);
+
+    browser.cookies.get({
+      url: origin,
+      name: cookieName,
+      storeId
+    }, getCookiesFromStable);
+  };
+
+  browser.cookies.getAllCookieStores(getStoreId);
 
 	/* To send an async sendResponse */
 	return true;

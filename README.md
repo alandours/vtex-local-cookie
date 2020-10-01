@@ -1,6 +1,6 @@
 # vtex-local-cookie
 
-Add the `VtexIdclientAutCookie` cookie to vtexlocal and the uploader.
+Add the `VtexIdclientAutCookie` cookie to vtexlocal and the Vtex uploader.
 
 ## Use
 

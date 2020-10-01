@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "vtex-local-cookie",
   "description": "Add the VtexIdclientAutCookie cookie to vtexlocal and the uploader",
-  "version": "1.1.1",
+  "version": "1.2",
   "author": "Alan Dours",
 
   "permissions": [
