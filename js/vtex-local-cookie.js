@@ -11,4 +11,5 @@ const reload = (response) => {
 		window.location.href = url;
 };
 
-browser.runtime.sendMessage({}, reload);
+const { origin } = window.location;
+browser.runtime.sendMessage({ origin }, reload);

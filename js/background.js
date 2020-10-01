@@ -62,8 +62,8 @@ const init = (request, sender, sendResponse) => {
     }, addLocalCookie);
   };
 
-  const { origin, tab } = sender || {};
-  const { id: tabId } = tab || {};
+  const { origin } = request || {};
+  const { tab: { id: tabId } } = sender || {};
 
   const getStoreId = (cookieStores) => {
     storeId = cookieStores.reduce((acc, curr) => {
