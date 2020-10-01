@@ -5,7 +5,7 @@ const defaultEnv = 'qarosenchile';
 const init = (request, sender, sendResponse) => {
   const reload = () => {
 		return sendResponse({ 
-			reload: true,
+			reload: /vtexlocal/.test(origin),
 			url: origin,
 			message: `The ${cookieName} cookie was added to ${origin}!`
 		})
